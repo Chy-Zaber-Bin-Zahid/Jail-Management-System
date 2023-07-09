@@ -8,11 +8,19 @@ db = SQLAlchemy(app)
 app.secret_key = 'jail'
 
 class User(db.Model):
-    iD = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     password = db.Column(db.String(120), nullable=False)
     role = db.Column(db.String(120), nullable=False)
+
+class Prisoner(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    age = db.Column(db.String(120), nullable=False)
+    birth = db.Column(db.String(120), nullable=False)
+    record = db.Column(db.String(120), nullable=False)
+    year = db.Column(db.String(120), nullable=False)
 
 @app.route('/')
 @app.route('/home')
@@ -154,6 +162,14 @@ def staffDetails():
 
     return render_template('staffDetails.html',user=user,failed=failed)
 
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        query = request.form.get('query')
+        results = User.query.filter(User.name.ilike(f'%{query}%')).all()
+        prisoner_results = Prisoner.query.filter(Prisoner.name.ilike(f'%{query}%')).all()
+        return render_template('search.html', results=results, prisoner_results=prisoner_results)
+    return render_template('search.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

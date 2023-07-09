@@ -5,6 +5,10 @@ content%}
 <nav class="nav">
   <a class="" href=""><img src="" alt="" />Jail Management</a>
   <ul class="nav-ul">
+    <form action="{{ url_for('search') }}" method="POST">
+      <input type="text" name="query" placeholder="Search..." />
+      <input type="submit" value="Submit">
+    </form>
     <li><a class="nav-a" href="{{url_for('home')}}">Logout</a></li>
   </ul>
 </nav>
