@@ -1,3 +1,50 @@
-.search-list{
+.nav-ul {
+  width: 50%;
+  justify-content: right;
+  gap: 1.5rem;
+  align-items: center;
+}
+.search-form {
+  width: 100%;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  border-radius: 100px;
+  padding: 0.5rem 3.6rem 0.5rem 0.5rem;
+  font-size: 1.4rem;
+}
+
+.search-btn {
+  padding: .35rem;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  position: absolute;
+  top: .2rem;
+  right: .5rem;
+}
+
+.search-btn:hover{
+  cursor: pointer;
+}
+
+.search-staff{
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
   font-size: 2rem;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.842);
+  list-style: none;
+}
+
+.search-list{
+  padding: .5rem 1rem;
+}
+
+.search-prisoner{
+  display: grid;
+  grid-template-columns: repeat(6,1fr);
+  font-size: 2rem;
+  background-color: rgba(255, 255, 255, 0.842);
+  list-style: none;
+}
