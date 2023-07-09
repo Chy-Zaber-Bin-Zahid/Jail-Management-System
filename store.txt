@@ -1,0 +1,43 @@
+# class Contacts(db.Model):
+#     sno = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(120), nullable=False)
+#     email = db.Column(db.String(120), nullable=False)
+#     phone_num = db.Column(db.String(120), nullable=False)
+#     mes = db.Column(db.String(120), nullable=False)
+
+# @app.route('/market', methods = ['GET','POST'])
+# def market():
+#     # items = [{'id': 1}, {'id': 2}, {'id': 3}]
+#     if request.method == 'POST':
+#         name = request.form.get('name')
+#         email = request.form.get('email')
+#         phone = request.form.get('phone')
+#         msg = request.form.get('msg')
+
+#         entry = Contacts(name=name, phone_num=phone, mes = msg, email=email)
+#         db.session.add(entry)
+#         db.session.commit()
+
+#     return render_template('market.html')
+
+{% extends 'base.html' %} {%block title %} Market Page {%endblock%} {%block
+content%}
+<h1>Market!</h1>
+{% for item in items %}
+<p>{{ item.id }}</p>
+{% endfor %}
+
+<form action="/market" method="post">
+  <label for="">Name</label>
+  <input name="name" type="text" />
+  <label for="">Email</label>
+  <input name="email" type="text" />
+  <label for="">Phone</label>
+  <input name="phone" type="text" />
+  <label for="">Message</label>
+  <input name="msg" type="text" />
+  <input type="submit">
+</form>
+{%endblock%}
+
+

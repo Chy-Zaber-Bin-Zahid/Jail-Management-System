@@ -1,0 +1,35 @@
+{% extends 'base.html' %} 
+{%block title %} Jail Management System {%endblock%} 
+{%block css%}
+  {{url_for('static', filename='style.css')}}
+{%endblock%}
+{%block login%}
+  {{url_for('static', filename='login.css')}}
+{%endblock%}
+{%block content%}
+<nav class="nav">
+  <a href=""><img src="" alt="">Jail Management</a>
+  <ul class="nav-ul">
+    <li><a class="nav-a" href="{{url_for('home')}}">Home</a></li>
+    <li><a class="nav-a" href="{{url_for('admin')}}">Admin</a></li>
+  </ul>
+</nav>
+<section class="section-login">
+  <form class="login-main" method="POST" action="/login">
+    <h1 class="login-failed">{{failed}}</h1>
+    <h1>Id</h1>
+    <input class="login-input" required placeholder="ID" name="id" type="text">
+    <h1>Role</h1>
+    <select class="login-input" name="occupation" id="occupation">
+      <option value="Cleaner">Cleaner</option>
+      <option value="Police">Police</option>
+      <option value="Chef">Chef</option>
+    </select>    
+    <h1>Email</h1>
+    <input class="login-input" required placeholder="EMAIL" name="email" type="text">
+    <h1>Password</h1>
+    <input class="login-input" required placeholder="PASSWORD" name="password" type="text">
+    <input class="login-btn" value="Submit" type="submit">
+  </form>
+</section>
+{%endblock%}

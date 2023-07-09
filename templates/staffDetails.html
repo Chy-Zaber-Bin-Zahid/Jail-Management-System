@@ -1,0 +1,69 @@
+{% extends 'base.html' %} {%block title %} Jail Management System {%endblock%}
+{%block css%} {{url_for('static', filename='style.css')}} {%endblock%} {%block
+adminDash%} {{url_for('static', filename='staffDetails.css')}} {%endblock%} {%block
+content%}
+<nav class="nav">
+  <a class="" href=""><img src="" alt="" />Jail Management</a>
+  <ul class="nav-ul">
+    <li><a class="nav-a" href="{{url_for('home')}}">Logout</a></li>
+  </ul>
+</nav>
+<section class="section-show">
+  <div class="option">
+    <div class="staff-main">
+      <h1 class="staff-title">Id</h1>
+      <h1 class="staff-title">Name</h1>
+      <h1 class="staff-title">Role</h1>
+      <h1 class="staff-title">Email</h1>
+      <h1 class="staff-title">Password</h1>
+      {% for user in user %}
+      <p class="staff-details {% if loop.index <= loop.index %} first-four{% endif %}">{{ user[0] }}</p>
+      <p class="staff-details {% if loop.index <= loop.index %} first-four{% endif %}">{{ user[1] }}</p>
+      <p class="staff-details {% if loop.index <= loop.index %} first-four{% endif %}">{{ user[2] }}</p>
+      <p class="staff-details {% if loop.index <= loop.index %} first-four{% endif %}">{{ user[3] }}</p>
+      <p class="staff-details {% if loop.index <= loop.index %} last-four{% endif %} ">{{ user[4] }}</p>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="account-div">
+    <form class="account-main" method="post" action="/staffDetails">
+      <h1 class="account-failed">{{failed}}</h1>
+      <h1>Name</h1>
+      <input
+        class="account-input"
+        required
+        placeholder="NAME"
+        name="name"
+        type="text"
+      />
+      <h1>Role</h1>
+      <select class="account-input" name="occupation" id="occupation">
+        <option value="Cleaner">Cleaner</option>
+        <option value="Police">Police</option>
+        <option value="Chef">Chef</option>
+      </select>
+      <h1>Email</h1>
+      <input
+        class="account-input"
+        required
+        placeholder="EMAIL"
+        name="email"
+        type="text"
+      />
+      <h1>Password</h1>
+      <input
+        class="account-input"
+        required
+        placeholder="PASSWORD"
+        name="password"
+        type="text"
+      />
+      <div class="three-input">
+        <input class="account-btn" name="btn" value="Add" type="submit" />
+        <input class="account-btn" name="btn" value="Modify" type="submit" />
+        <input class="account-btn" name="btn" value="Delete" type="submit" />
+      </div>
+    </form>
+  </div>
+</section>
+{%endblock%}

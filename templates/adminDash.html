@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {%block title %} Jail Management System {%endblock%}
+{%block css%} {{url_for('static', filename='style.css')}} {%endblock%} {%block
+adminDash%} {{url_for('static', filename='adminDash.css')}} {%endblock%} {%block
+content%}
+<nav class="nav">
+  <a class="" href=""><img src="" alt="" />Jail Management</a>
+  <ul class="nav-ul">
+    <li><a class="nav-a" href="{{url_for('home')}}">Logout</a></li>
+  </ul>
+</nav>
+<section class="section-show">
+  <div class="option">
+    <a href="{{url_for('staffDetails')}}">Staff Details</a>
+    <a href="{{url_for('home')}}">Prisoner Information</a>
+    <a href="{{url_for('home')}}">Police Information</a>
+    <a href="{{url_for('home')}}">Cleaner Information</a>
+    <a href="{{url_for('home')}}">Chef Information</a>
+  </div>
+  <div class="account-div">
+  </div>
+</section>
+{%endblock%}
