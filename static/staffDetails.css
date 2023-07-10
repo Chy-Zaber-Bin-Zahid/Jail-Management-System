@@ -40,6 +40,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
 }
 
 .staff-main{
@@ -49,19 +50,13 @@
 
 .staff-title{
   font-size: 1.6rem;
-  border: 1px solid black;
   padding: 1rem;
   border-bottom: none;
   background-color: white;
 }
 
-.staff-title:nth-child(-n+4) {
-  border-right: none;
-}
-
 .staff-details{
   font-size: 1.4rem;
-  border: 1px solid black;
   padding: 1rem;
   background-color: aliceblue;
 }
@@ -75,12 +70,24 @@
   border-bottom: none;
 }
 
-.last{
-  border-bottom: 1px solid black;
+.staff-btn{
+  width: 70%;
+  justify-self: center;
+  padding: .5rem;
+  background-color: white;
+  font-size: 1.6rem;
+  transition: all .3s;
 }
 
-.staff-details:nth-last-child(-n+5) {
-  border-bottom: 1px solid rgb(0, 0, 0);
+.staff-btn:hover{
+  cursor: pointer;
+  background-color: black;
+  color: white;
+  transform: translateX(-7px);
+}
+
+.staff-btn:active{
+  transform: translateX(0px);
 }
 
 .account-div {
@@ -114,7 +121,6 @@
   padding: 0.5rem;
   border: none;
   font-size: 1.6rem;
-  font-weight: bold;
   width: 10rem;
   border-radius: 5px;
   margin: 0 auto;

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import MySQLdb
+import hashlib
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/jailmanage'
@@ -31,30 +32,32 @@ def home():
 def login():
     failed = ""
     if request.method == 'POST':
-        checkId = request.form.get('id')
         email = request.form.get('email')
         password = request.form.get('password')
-        occupation = request.form.get('occupation')
         # Database connect
         conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
         cursor = conn.cursor()
         # Query execute
-        cursor.execute('SELECT * FROM user WHERE id = %s AND `email` = %s AND password = %s AND role = %s', (checkId, email, password, occupation))
+        cursor.execute('SELECT * FROM user WHERE email = %s', (email,))
         # Matched row in 'user'
         user = cursor.fetchone()
-
         if user is not None:
-            session['id'] = user[0]
-            session['email'] = user[3]
-            if user[2] == "Cleaner":
-                return redirect(url_for('cleaner'))
-            elif user[2] == "Chef":
-                return redirect(url_for('chef'))
+            hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            cursor.execute('SELECT * FROM user WHERE password = %s And email = %s', (hashed_password,email))
+            user1 = cursor.fetchone()
+            if user1 is not None:
+                session['id'] = user[0]
+                session['email'] = user[3]
+                if user[2] == "Cleaner":
+                    return redirect(url_for('cleaner'))
+                elif user[2] == "Chef":
+                    return redirect(url_for('chef'))
+                else:
+                    return redirect(url_for('police'))
             else:
-                return redirect(url_for('police'))
+                failed = "Password Does Not Match!"
         else:
-            failed = "Login Failed!"
-            # return redirect(url_for('login'))
+            failed = "Email Not Found!"
         
     return render_template('login.html', failed=failed)
 
@@ -68,16 +71,23 @@ def admin():
         conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
         cursor = conn.cursor()
         # Query execute
-        cursor.execute('SELECT * FROM admin WHERE `email` = %s AND password = %s', (email, password))
+        cursor.execute('SELECT * FROM admin WHERE `email` = %s', (email,))
         # Matched row in 'user'
         user = cursor.fetchone()
 
         if user is not None:
-            session['email'] = user[1]
-            return redirect(url_for('adminDash'))
+            hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            cursor.execute('SELECT * FROM admin WHERE password = %s And email = %s', (hashed_password,email))
+            user1 = cursor.fetchone()
+            if user1 is not None:
+                print(user)
+                session['email'] = user[1]
+                return redirect(url_for('adminDash'))
+            else:
+                failed = "Password Does Not Matched!"
+                # return redirect(url_for('admin'))
         else:
-            failed = "Login Failed!"
-            # return redirect(url_for('admin'))
+            failed = "Email Not Found!"
     return render_template('admin.html',failed=failed)
 
 @app.route('/cleaner')
@@ -118,7 +128,10 @@ def staffDetails():
             if existing_user:
                 failed="Email already exists. Please choose a different email!"
             else:
-                entry = User(name=name, role=role, password=password, email=email)
+                #hashed password
+                hashedPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+                entry = User(name=name, role=role, password=hashedPassword, email=email)
                 db.session.add(entry)
                 db.session.commit()
                 # Database connect
@@ -134,7 +147,7 @@ def staffDetails():
             user = User.query.filter_by(email=email).first()
             if user:
                 user.name = request.form.get('name')
-                user.password = request.form.get('password')
+                user.password = hashlib.sha256(request.form.get('password').encode('utf-8')).hexdigest()
                 user.role = request.form.get('occupation')
                 db.session.commit()
                 # Database connect
