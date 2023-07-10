@@ -16,19 +16,11 @@
 </nav>
 <section class="section-login">
   <form class="login-main" method="POST" action="/login">
-    <h1 class="login-failed">{{failed}}</h1>
-    <h1>Id</h1>
-    <input class="login-input" required placeholder="ID" name="id" type="text">
-    <h1>Role</h1>
-    <select class="login-input" name="occupation" id="occupation">
-      <option value="Cleaner">Cleaner</option>
-      <option value="Police">Police</option>
-      <option value="Chef">Chef</option>
-    </select>    
+    <h1 class="login-failed">{{failed}}</h1> 
     <h1>Email</h1>
     <input class="login-input" required placeholder="EMAIL" name="email" type="text">
     <h1>Password</h1>
-    <input class="login-input" required placeholder="PASSWORD" name="password" type="text">
+    <input class="login-input" required placeholder="PASSWORD" name="password" type="password">
     <input class="login-btn" value="Submit" type="submit">
   </form>
 </section>
