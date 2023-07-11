@@ -1,0 +1,99 @@
+<div class="account-div">
+  {% if info == "prisoner" %}
+  <form class="account-main" method="post" action="/prisonerInfo">
+    <h1 class="account-failed">{{failed}}</h1>
+    <h1>Name</h1>
+    <input
+      class="account-input name"
+      required
+      placeholder="NAME"
+      name="name"
+      type="text"
+    />
+    <h1>Age</h1>
+    <input
+      class="account-input age"
+      required
+      placeholder="AGE"
+      name="age"
+      type="text"
+    />
+    <h1>Birth</h1>
+    <input
+      class="account-input birth"
+      required
+      placeholder="BIRTH"
+      name="birth"
+      type="date"
+    />
+    <h1>Record</h1>
+    <input
+      class="account-input record"
+      required
+      placeholder="RECORD"
+      name="record"
+      type="text"
+    />
+    <h1>Cell</h1>
+    <input
+      class="account-input cell"
+      required
+      placeholder="CELL"
+      name="cell"
+      type="text"
+    />
+    <h1>Punishment</h1>
+    <input
+      class="account-input year"
+      required
+      placeholder="TIME"
+      name="year"
+      type="text"
+    />
+    <div class="three-input">
+      <input class="account-btn" name="btn" value="Add" type="submit" />
+      <input class="account-btn" name="btn" value="Modify" type="submit" />
+      <input class="account-btn" name="btn" value="Delete" type="submit" />
+    </div>
+  </form>
+  {% else %}
+  <form class="account-main" method="post" action="/staffDetails">
+    <h1 class="account-failed">{{failed}}</h1>
+    <h1>Name</h1>
+    <input
+      class="account-input name"
+      required
+      placeholder="NAME"
+      name="name"
+      type="text"
+    />
+    <h1>Role</h1>
+    <select class="account-input op" name="occupation" id="occupation">
+      <option value="Cleaner">Cleaner</option>
+      <option value="Police">Police</option>
+      <option value="Chef">Chef</option>
+    </select>
+    <h1>Email</h1>
+    <input
+      class="account-input email"
+      required
+      placeholder="EMAIL"
+      name="email"
+      type="text"
+    />
+    <h1>Password</h1>
+    <input
+      class="account-input"
+      required
+      placeholder="PASSWORD"
+      name="password"
+      type="text"
+    />
+    <div class="three-input">
+      <input class="account-btn" name="btn" value="Add" type="submit" />
+      <input class="account-btn" name="btn" value="Modify" type="submit" />
+      <input class="account-btn" name="btn" value="Delete" type="submit" />
+    </div>
+  </form>
+  {% endif %}
+</div>

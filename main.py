@@ -22,6 +22,7 @@ class Prisoner(db.Model):
     birth = db.Column(db.String(120), nullable=False)
     record = db.Column(db.String(120), nullable=False)
     year = db.Column(db.String(120), nullable=False)
+    cell = db.Column(db.String(120), nullable=False)
 
 @app.route('/')
 @app.route('/home')
@@ -103,36 +104,84 @@ def chef():
 
 @app.route('/adminDash')
 def adminDash():
-    return render_template('adminDash.html')
+    if session['email'] != 'czaber49@gmail.com':
+        return render_template('error.html')
+    else:
+        return render_template('adminDash.html')
 
 @app.route('/staffDetails', methods = ['GET','POST'])
 def staffDetails():
-    failed= ""
-    # Database connect
-    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
-    cursor = conn.cursor()
-    # Query execute
-    cursor.execute('SELECT * FROM user')
-    # Matched row in 'user'
-    user = cursor.fetchall()
+    info = 'staff'
+    if session['email'] != 'czaber49@gmail.com':
+        return render_template('error.html')
+    else:
+        failed= ""
+        # Database connect
+        conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+        cursor = conn.cursor()
+        # Query execute
+        cursor.execute('SELECT * FROM user')
+        # Matched row in 'user'
+        user = cursor.fetchall()
 
-    if request.method == 'POST':
-        if 'Add' == request.form.get('btn'):
-            name = request.form.get('name')
-            email = request.form.get('email')
-            password = request.form.get('password')
-            role = request.form.get('occupation')
+        if request.method == 'POST':
+            if 'Add' == request.form.get('btn'):
+                name = request.form.get('name')
+                email = request.form.get('email')
+                password = request.form.get('password')
+                role = request.form.get('occupation')
 
-            existing_user = User.query.filter_by(email=email).first()
-            if existing_user:
-                failed="Email already exists. Please choose a different email!"
+                existing_user = User.query.filter_by(email=email).first()
+                if existing_user:
+                    failed="Email already exists. Please choose a different email!"
+                else:
+                    #hashed password
+                    hashedPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+                    entry = User(name=name, role=role, password=hashedPassword, email=email)
+                    db.session.add(entry)
+                    db.session.commit()
+                    # Database connect
+                    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                    cursor = conn.cursor()
+                    # Query execute
+                    cursor.execute('SELECT * FROM user')
+                    # Matched row in 'user'
+                    user = cursor.fetchall()
+                    failed="Added!"
+            elif 'Modify' == request.form.get('btn'):
+                email = request.form.get('email')
+                user = User.query.filter_by(email=email).first()
+                if user:
+                    user.name = request.form.get('name')
+                    user.password = hashlib.sha256(request.form.get('password').encode('utf-8')).hexdigest()
+                    user.role = request.form.get('occupation')
+                    db.session.commit()
+                    # Database connect
+                    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                    cursor = conn.cursor()
+                    # Query execute
+                    cursor.execute('SELECT * FROM user')
+                    # Matched row in 'user'
+                    user = cursor.fetchall()
+                    failed="Changed!"
+            elif '🍳' == request.form.get('btn'):
+                email = request.form.get('email')
+                user = User.query.filter_by(email=email).first()
+                # Database connect
+                conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                cursor = conn.cursor()
+                # Query execute
+                cursor.execute('SELECT * FROM user WHERE email = %s', (email,))
+                # Matched row in 'user'
+                user = cursor.fetchall()
+                    
             else:
-                #hashed password
-                hashedPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
-
-                entry = User(name=name, role=role, password=hashedPassword, email=email)
-                db.session.add(entry)
-                db.session.commit()
+                email = request.form.get('email')
+                user = User.query.filter_by(email=email).first()
+                if user:
+                    db.session.delete(user)
+                    db.session.commit()
                 # Database connect
                 conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
                 cursor = conn.cursor()
@@ -140,54 +189,95 @@ def staffDetails():
                 cursor.execute('SELECT * FROM user')
                 # Matched row in 'user'
                 user = cursor.fetchall()
-                failed="Added!"
-        elif 'Modify' == request.form.get('btn'):
-            email = request.form.get('email')
-            user = User.query.filter_by(email=email).first()
-            if user:
-                user.name = request.form.get('name')
-                user.password = hashlib.sha256(request.form.get('password').encode('utf-8')).hexdigest()
-                user.role = request.form.get('occupation')
-                db.session.commit()
+                failed="Deleted!"
+
+        return render_template('staffDetails.html',user=user,failed=failed,info=info)
+    
+@app.route('/prisonerInfo', methods = ['GET','POST'])
+def prisonerInfo():
+    info = 'prisoner'
+    if session['email'] != 'czaber49@gmail.com':
+        return render_template('error.html')
+    else:
+        failed= ""
+        # Database connect
+        conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+        cursor = conn.cursor()
+        # Query execute
+        cursor.execute('SELECT * FROM prisoner')
+        # Matched row in 'user'
+        user = cursor.fetchall()
+
+        if request.method == 'POST':
+            if 'Add' == request.form.get('btn'):
+                name = request.form.get('name')
+                age = request.form.get('age')
+                birth = request.form.get('birth')
+                record = request.form.get('record')
+                cell = request.form.get('cell')
+                year = request.form.get('year')
+
+                existing_user = Prisoner.query.filter_by(cell=cell).first()
+                if existing_user:
+                    failed="Cell already full. Please choose a different cell!"
+                else:
+                    entry = Prisoner(name=name, age=age, birth=birth, record=record, cell=cell, year=year)
+                    db.session.add(entry)
+                    db.session.commit()
+                    # Database connect
+                    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                    cursor = conn.cursor()
+                    # Query execute
+                    cursor.execute('SELECT * FROM prisoner')
+                    # Matched row in 'user'
+                    user = cursor.fetchall()
+                    failed="Added!"
+            elif 'Modify' == request.form.get('btn'):
+                cell = request.form.get('cell')
+                user = Prisoner.query.filter_by(cell=cell).first()
+                if user:
+                    user.name = request.form.get('name')
+                    user.age = request.form.get('age')
+                    user.birth = request.form.get('birth')
+                    user.record = request.form.get('record')
+                    user.cell = request.form.get('cell')
+                    user.year = request.form.get('year')
+                    db.session.commit()
+                    # Database connect
+                    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                    cursor = conn.cursor()
+                    # Query execute
+                    cursor.execute('SELECT * FROM prisoner')
+                    # Matched row in 'user'
+                    user = cursor.fetchall()
+                    failed="Changed!"
+            elif '🍳' == request.form.get('btn'):
+                cell = request.form.get('cell')
+                user = Prisoner.query.filter_by(cell=cell).first()
                 # Database connect
                 conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
                 cursor = conn.cursor()
                 # Query execute
-                cursor.execute('SELECT * FROM user')
+                cursor.execute('SELECT * FROM prisoner WHERE cell = %s', (cell,))
                 # Matched row in 'user'
                 user = cursor.fetchall()
-                failed="Changed!"
-        elif '🍳' == request.form.get('btn'):
-            email = request.form.get('email')
-            user = User.query.filter_by(email=email).first()
-            # Database connect
-            conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
-            cursor = conn.cursor()
-            # Query execute
-            cursor.execute('SELECT * FROM user WHERE email = %s', (email,))
-            # Matched row in 'user'
-            user = cursor.fetchall()
-                
-        else:
-            email = request.form.get('email')
-            user = User.query.filter_by(email=email).first()
-            if user:
-                db.session.delete(user)
-                db.session.commit()
-            # Database connect
-            conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
-            cursor = conn.cursor()
-            # Query execute
-            cursor.execute('SELECT * FROM user Where email = %s',(email))
-            # Matched row in 'user'
-            user = cursor.fetchall()
-            failed="Deleted!"
+                    
+            else:
+                cell = request.form.get('cell')
+                user = Prisoner.query.filter_by(cell=cell).first()
+                if user:
+                    db.session.delete(user)
+                    db.session.commit()
+                # Database connect
+                conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                cursor = conn.cursor()
+                # Query execute
+                cursor.execute('SELECT * FROM prisoner')
+                # Matched row in 'user'
+                user = cursor.fetchall()
+                failed="Deleted!"
 
-    return render_template('staffDetails.html',user=user,failed=failed)
-
-@app.route('/search', methods=['GET', 'POST'])
-def search():
-    return render_template('staffDetails.html')
+        return render_template('prisonerInfo.html',user=user,failed=failed,info=info)
 
 if __name__ == '__main__':
     app.run(debug=True)

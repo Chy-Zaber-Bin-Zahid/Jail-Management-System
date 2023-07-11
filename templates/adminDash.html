@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {%block title %} Jail Management System {%endblock%}
+{%block navTitle%} Jail Management {%endblock%}
 {%block css%} {{url_for('static', filename='style.css')}} {%endblock%} {%block
 adminDash%} {{url_for('static', filename='adminDash.css')}} {%endblock%} 
 {%block nav%}
@@ -9,7 +10,7 @@ content%}
 <section class="section-show">
   <div class="option">
     <a href="{{url_for('staffDetails')}}">Staff Details</a>
-    <a href="{{url_for('home')}}">Prisoner Information</a>
+    <a href="{{url_for('prisonerInfo')}}">Prisoner Information</a>
     <a href="{{url_for('home')}}">Police Information</a>
     <a href="{{url_for('home')}}">Cleaner Information</a>
     <a href="{{url_for('home')}}">Chef Information</a>

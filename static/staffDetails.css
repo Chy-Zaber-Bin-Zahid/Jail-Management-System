@@ -30,7 +30,7 @@
 }
 
 .section-show {
-  height: calc(100% - 53.4333px);
+  height: calc(100% - 47.9667px);
   display: grid;
   grid-template-columns: 1.5fr .5fr;
 }
@@ -49,6 +49,11 @@
 .staff-main{
   display: grid;
   grid-template-columns: repeat(5,1fr);
+}
+
+.prisoner-main{
+  display: grid;
+  grid-template-columns: repeat(8,1fr);
 }
 
 .staff-title{
@@ -97,7 +102,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  padding: 0rem 1rem;
 }
 
 .account-main {
