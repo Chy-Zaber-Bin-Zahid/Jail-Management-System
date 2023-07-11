@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {%block title %} Jail Management System {%endblock%}
+{%block error%} {{url_for('static', filename='error.css')}} {%endblock%}
 {%block
 content%}
-<h1>Access Denied!</h1>
+<img class="error" src="/static/img/error.jpg" alt="Access Denied!">
 {%endblock%}
