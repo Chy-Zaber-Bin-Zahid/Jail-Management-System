@@ -5,7 +5,7 @@
   align-items: center;
 }
 .search-form {
-  width: 100%;
+  width: 50%;
   position: relative;
 }
 
@@ -40,7 +40,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  padding: 0rem 1rem;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: auto;
 }
 
 .staff-main{

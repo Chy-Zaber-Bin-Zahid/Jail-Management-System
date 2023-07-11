@@ -80,7 +80,6 @@ def admin():
             cursor.execute('SELECT * FROM admin WHERE password = %s And email = %s', (hashed_password,email))
             user1 = cursor.fetchone()
             if user1 is not None:
-                print(user)
                 session['email'] = user[1]
                 return redirect(url_for('adminDash'))
             else:
@@ -158,6 +157,17 @@ def staffDetails():
                 # Matched row in 'user'
                 user = cursor.fetchall()
                 failed="Changed!"
+        elif '🍳' == request.form.get('btn'):
+            email = request.form.get('email')
+            user = User.query.filter_by(email=email).first()
+            # Database connect
+            conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+            cursor = conn.cursor()
+            # Query execute
+            cursor.execute('SELECT * FROM user WHERE email = %s', (email,))
+            # Matched row in 'user'
+            user = cursor.fetchall()
+                
         else:
             email = request.form.get('email')
             user = User.query.filter_by(email=email).first()
@@ -168,7 +178,7 @@ def staffDetails():
             conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
             cursor = conn.cursor()
             # Query execute
-            cursor.execute('SELECT * FROM user')
+            cursor.execute('SELECT * FROM user Where email = %s',(email))
             # Matched row in 'user'
             user = cursor.fetchall()
             failed="Deleted!"
@@ -177,12 +187,7 @@ def staffDetails():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
-    if request.method == 'POST':
-        query = request.form.get('query')
-        results = User.query.filter(User.name.ilike(f'%{query}%')).all()
-        prisoner_results = Prisoner.query.filter(Prisoner.name.ilike(f'%{query}%')).all()
-        return render_template('search.html', results=results, prisoner_results=prisoner_results)
-    return render_template('search.html')
+    return render_template('staffDetails.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

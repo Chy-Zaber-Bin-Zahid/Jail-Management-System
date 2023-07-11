@@ -1,14 +1,7 @@
-{% extends 'base.html' %} 
-{%block title %} Jail Management System {%endblock%} 
-{%block css%}
-  {{url_for('static', filename='style.css')}}
+{% extends 'base.html' %} {%block title %} Jail Management System {%endblock%}
+{%block css%} {{url_for('static', filename='style.css')}} {%endblock%}
+{%block nav%} 
+<li><a class="nav-a" href="{{url_for('login')}}">Login</a></li>
+<li><a class="nav-a" href="{{url_for('admin')}}">Admin</a></li>
 {%endblock%}
-{%block content%}
-<nav class="nav">
-  <a href=""><img src="" alt="">Jail Management</a>
-  <ul class="nav-ul">
-    <li><a class="nav-a" href="{{url_for('login')}}">Login</a></li>
-    <li><a class="nav-a" href="{{url_for('admin')}}">Admin</a></li>
-  </ul>
-</nav>  
-{%endblock%}
+{%block content%} {%endblock%}

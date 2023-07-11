@@ -37,6 +37,12 @@
     />
   </head>
   <body>
+    <nav class="nav">
+      <a href=""><img src="" alt="">Jail Management</a>
+      <ul class="nav-ul">
+        {%block nav%} {%endblock%}
+      </ul>
+    </nav>  
     {%block content%} {%endblock%}
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>
