@@ -27,6 +27,7 @@ class Prisoner(db.Model):
 @app.route('/')
 @app.route('/home')
 def home():
+    session['email'] = ""
     return render_template('home.html')
 
 @app.route('/login', methods = ['GET','POST'])
