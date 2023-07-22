@@ -1,0 +1,25 @@
+.section-schedule{
+  height: calc(100% - 47.9667px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.schedule-main{
+ background-color: rgb(207, 207, 207); 
+ display: grid;
+ grid-template-columns: repeat(2,1fr);
+ padding: 1rem;
+ gap: 3rem;
+ font-size: 2rem;
+}
+
+.schedule-title{
+  grid-column: 1 / span 2;
+  text-align: center;
+  background-color: #fff;
+}
+
+.schedule-span{
+  font-weight: bold;
+}

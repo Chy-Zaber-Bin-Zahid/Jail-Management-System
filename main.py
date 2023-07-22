@@ -101,7 +101,14 @@ def cleaner():
     user = cursor.fetchone()
     if user != None:
         if user[2] == 'Cleaner': 
-            return render_template('cleaner.html')
+            # Database connect
+            conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+            cursor = conn.cursor()
+            # Query execute
+            cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
+            # Matched row in 'user'
+            user = cursor.fetchall()
+            return render_template('cleaner.html',user=user)
         else:
             return render_template('error.html')
     else:
@@ -117,7 +124,14 @@ def police():
     user = cursor.fetchone()
     if user != None:
         if user[2] == 'Police': 
-            return render_template('police.html')
+             # Database connect
+            conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+            cursor = conn.cursor()
+            # Query execute
+            cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
+            # Matched row in 'user'
+            user = cursor.fetchall()
+            return render_template('police.html',user=user)
         else:
             return render_template('error.html')
     else:
@@ -133,7 +147,14 @@ def chef():
     user = cursor.fetchone()
     if user != None:
         if user[2] == 'Chef': 
-            return render_template('chef.html')
+             # Database connect
+            conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+            cursor = conn.cursor()
+            # Query execute
+            cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
+            # Matched row in 'user'
+            user = cursor.fetchall()
+            return render_template('chef.html',user=user)
         else:
             return render_template('error.html')
     else:

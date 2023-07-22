@@ -4,9 +4,9 @@
 {%block css%}
   {{url_for('static', filename='style.css')}}
 {%endblock%}
-{%block nav%}
+{%block staffSchedule%}
+{{url_for('static', filename='staffSchedule.css')}} {%endblock%} {%block nav%}
 <li><a class="nav-a" href="{{url_for('home')}}">Logout</a></li>
-{%endblock%}
-{%block content%}
-
+{%endblock%} {%block content%}
+{% include 'scheduleNormal.html' %}
 {%endblock%}

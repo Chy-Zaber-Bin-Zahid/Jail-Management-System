@@ -1,0 +1,12 @@
+<section class="section-schedule">
+  <div class="schedule-main">
+    <h1 class="schedule-title">Work Schedule</h1>
+    {% for user in user %}
+    <p class="staff-details row-{{ loop.index }}"><span class="schedule-span">Name:</span> {{ user[0] }}</p>
+    <p class="staff-details row-{{ loop.index }}"><span class="schedule-span">Email:</span> {{ user[1] }}</p>
+    <p class="staff-details row-{{ loop.index }}"><span class="schedule-span">Work:</span> {{ user[2] }}</p>
+    <p class="staff-details row-{{ loop.index }}"><span class="schedule-span">Shift:</span> {{ user[3] }}</p>
+    <p class="staff-details row-{{ loop.index }}"><span class="schedule-span">Duration:</span> {{ user[4] }}</p>
+    {% endfor %}
+  </div>
+</section>
