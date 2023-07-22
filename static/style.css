@@ -21,7 +21,7 @@ html,body{
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: rgb(185, 185, 185);
+  background-color: #fff;
 }
 
 .nav-ul{

@@ -40,23 +40,23 @@
   <!-- <h1 class="staff-title">Password</h1> -->
   {% if info == "prisoner" %}
   {% for user in user %}
-  <p class="staff-details">{{ user[0] }}</p>
-  <p class="staff-details">{{ user[1] }}</p>
-  <p class="staff-details">{{ user[2] }}</p>
-  <p class="staff-details">{{ user[3] }}</p>
-  <p class="staff-details">{{ user[4] }}</p>
-  <p class="staff-details">{{ user[5] }}</p>
-  <p class="staff-details">{{ user[6] }}</p>
-  <button onclick="editPrisoner('{{ user[0] }}', '{{ user[1] }}', '{{ user[2] }}', '{{ user[3] }}','{{ user[4] }}','{{ user[5] }}','{{ user[6] }}')" class="staff-btn">Edit</button>
+  <p class="staff-details row-{{ loop.index }}">{{ user[0] }}</p>
+  <p class="staff-details row-{{ loop.index }}">{{ user[1] }}</p>
+  <p class="staff-details row-{{ loop.index }}">{{ user[2] }}</p>
+  <p class="staff-details row-{{ loop.index }}">{{ user[3] }}</p>
+  <p class="staff-details row-{{ loop.index }}">{{ user[4] }}</p>
+  <p class="staff-details row-{{ loop.index }}">{{ user[5] }}</p>
+  <p class="staff-details row-{{ loop.index }}">{{ user[6] }}</p>
+  <button onclick="editPrisoner('{{ user[0] }}', '{{ user[1] }}', '{{ user[2] }}', '{{ user[3] }}','{{ user[4] }}','{{ user[5] }}','{{ user[6] }}', '{{ loop.index }}')" class="staff-btn">Edit</button>
   <!-- <p class="staff-details {% if loop.index <= loop.index %} last-four{% endif %} ">{{ user[4] }}</p> -->
   {% endfor %}
   {% else %}
   {% for user in user %}
-  <p class="staff-details">{{ user[0] }}</p>
-  <p class="staff-details">{{ user[1] }}</p>
-  <p class="staff-details">{{ user[2] }}</p>
-  <p class="staff-details">{{ user[3] }}</p>
-  <button onclick="editUser('{{ user[0] }}', '{{ user[1] }}', '{{ user[2] }}', '{{ user[3] }}')" class="staff-btn">Edit</button>
+  <p class="staff-details row-{{ loop.index }}">{{ user[0] }}</p>
+  <p class="staff-details row-{{ loop.index }}">{{ user[1] }}</p>
+  <p class="staff-details row-{{ loop.index }}">{{ user[2] }}</p>
+  <p class="staff-details row-{{ loop.index }}">{{ user[3] }}</p>
+  <button onclick="editUser('{{ user[0] }}', '{{ user[1] }}', '{{ user[2] }}', '{{ user[3] }}', '{{ loop.index }}')" class="staff-btn">Edit</button>
   {% endfor %}
   {% endif %}
 </div>

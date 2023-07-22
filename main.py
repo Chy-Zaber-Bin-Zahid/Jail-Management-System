@@ -93,15 +93,51 @@ def admin():
 
 @app.route('/cleaner')
 def cleaner():
-    return render_template('cleaner.html')
+    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+    cursor = conn.cursor()
+    # Query execute
+    cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
+    # Matched row in 'user'
+    user = cursor.fetchone()
+    if user != None:
+        if user[2] == 'Cleaner': 
+            return render_template('cleaner.html')
+        else:
+            return render_template('error.html')
+    else:
+        return render_template('error.html')
 
 @app.route('/police')
 def police():
-    return render_template('police.html')
+    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+    cursor = conn.cursor()
+    # Query execute
+    cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
+    # Matched row in 'user'
+    user = cursor.fetchone()
+    if user != None:
+        if user[2] == 'Police': 
+            return render_template('police.html')
+        else:
+            return render_template('error.html')
+    else:
+        return render_template('error.html')
 
 @app.route('/chef')
 def chef():
-    return render_template('chef.html')
+    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+    cursor = conn.cursor()
+    # Query execute
+    cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
+    # Matched row in 'user'
+    user = cursor.fetchone()
+    if user != None:
+        if user[2] == 'Chef': 
+            return render_template('chef.html')
+        else:
+            return render_template('error.html')
+    else:
+        return render_template('error.html')
 
 @app.route('/adminDash')
 def adminDash():
