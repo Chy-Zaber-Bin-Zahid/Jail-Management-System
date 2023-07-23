@@ -30,7 +30,7 @@
 }
 
 .section-show {
-  height: calc(100% - 47.9667px);
+  height: calc(100% - 68.1333px);
   display: grid;
   grid-template-columns: 1.5fr .5fr;
 }

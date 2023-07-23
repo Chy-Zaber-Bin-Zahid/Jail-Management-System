@@ -108,6 +108,10 @@ def cleaner():
             cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
             # Matched row in 'user'
             user = cursor.fetchall()
+            # Create a new tuple with the additional element "Cleaner"
+            user = user[0] + ('Cleaner',)
+            # Create a double tuple with the inner tuple
+            user = (user,)
             return render_template('cleaner.html',user=user)
         else:
             return render_template('error.html')
@@ -131,6 +135,10 @@ def police():
             cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
             # Matched row in 'user'
             user = cursor.fetchall()
+            # Create a new tuple with the additional element "Cleaner"
+            user = user[0] + ('Police',)
+            # Create a double tuple with the inner tuple
+            user = (user,)
             return render_template('police.html',user=user)
         else:
             return render_template('error.html')
@@ -154,6 +162,10 @@ def chef():
             cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
             # Matched row in 'user'
             user = cursor.fetchall()
+            # Create a new tuple with the additional element "Cleaner"
+            user = user[0] + ('Chef',)
+            # Create a double tuple with the inner tuple
+            user = (user,)
             return render_template('chef.html',user=user)
         else:
             return render_template('error.html')
@@ -165,7 +177,16 @@ def adminDash():
     if session['email'] != 'czaber49@gmail.com':
         return render_template('error.html')
     else:
-        return render_template('adminDash.html')
+        # Database connect
+        conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+        cursor = conn.cursor()
+        # Query execute
+        cursor.execute('SELECT role, COUNT(*) as role_count FROM user WHERE role IN (%s, %s, %s) GROUP BY role', ('Cleaner', 'Chef', 'Police'))
+        # Matched row in 'user'
+        user = cursor.fetchall()
+        cursor.execute('SELECT COUNT(*) as row_count FROM prisoner')
+        prisoner = cursor.fetchone()
+        return render_template('adminDash.html',user=user,prisoner=prisoner)
 
 @app.route('/staffDetails', methods = ['GET','POST'])
 def staffDetails():
