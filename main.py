@@ -15,6 +15,11 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
     role = db.Column(db.String(120), nullable=False)
 
+class Request(db.Model):
+    email = db.Column(db.String(200), primary_key=True)
+    shift = db.Column(db.String(200), nullable=False)
+    reason = db.Column(db.String(1000), nullable=False)
+
 class Prisoner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
@@ -91,16 +96,32 @@ def admin():
             failed = "Email Not Found!"
     return render_template('admin.html',failed=failed)
 
-@app.route('/cleaner')
+@app.route('/cleaner', methods = ['GET','POST'])
 def cleaner():
-    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
-    cursor = conn.cursor()
-    # Query execute
-    cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
-    # Matched row in 'user'
-    user = cursor.fetchone()
-    if user != None:
-        if user[2] == 'Cleaner': 
+    if request.method == 'POST':
+        req="Request Send!"
+        shift = request.form.get('shift')
+        email = session['email']
+        reason = request.form.get('reason')
+        existing_user = Request.query.filter_by(email=email).first()
+        if existing_user:
+            req="Already Requested!"
+             # Database connect
+            conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+            cursor = conn.cursor()
+            # Query execute
+            cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
+            # Matched row in 'user'
+            user = cursor.fetchall()
+            # Create a new tuple with the additional element "Cleaner"
+            user = user[0] + ('Cleaner',)
+            # Create a double tuple with the inner tuple
+            user = (user,)
+            return render_template('cleaner.html',user=user,req=req)
+        else:
+            entry = Request(shift=shift, email=email, reason=reason)
+            db.session.add(entry)
+            db.session.commit()
             # Database connect
             conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
             cursor = conn.cursor()
@@ -112,22 +133,44 @@ def cleaner():
             user = user[0] + ('Cleaner',)
             # Create a double tuple with the inner tuple
             user = (user,)
-            return render_template('cleaner.html',user=user)
+            return render_template('cleaner.html',user=user,req=req)
+    else:
+        # req = 'You Can Request For Schedule Change Only Once!'
+        conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+        cursor = conn.cursor()
+        # Query execute
+        cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
+        # Matched row in 'user'
+        user = cursor.fetchone()
+        if user != None:
+            if user[2] == 'Cleaner': 
+                # Database connect
+                conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                cursor = conn.cursor()
+                # Query execute
+                cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
+                # Matched row in 'user'
+                user = cursor.fetchall()
+                # Create a new tuple with the additional element "Cleaner"
+                user = user[0] + ('Cleaner',)
+                # Create a double tuple with the inner tuple
+                user = (user,)
+                return render_template('cleaner.html',user=user,req="You Can't Request Again If You Already Have A Pending Request!")
+            else:
+                return render_template('error.html')
         else:
             return render_template('error.html')
-    else:
-        return render_template('error.html')
 
-@app.route('/police')
+@app.route('/police', methods = ['GET','POST'])
 def police():
-    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
-    cursor = conn.cursor()
-    # Query execute
-    cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
-    # Matched row in 'user'
-    user = cursor.fetchone()
-    if user != None:
-        if user[2] == 'Police': 
+    if request.method == 'POST':
+        req="Request Send!"
+        shift = request.form.get('shift')
+        email = session['email']
+        reason = request.form.get('reason')
+        existing_user = Request.query.filter_by(email=email).first()
+        if existing_user:
+            req="Already Requested!"
              # Database connect
             conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
             cursor = conn.cursor()
@@ -136,25 +179,62 @@ def police():
             # Matched row in 'user'
             user = cursor.fetchall()
             # Create a new tuple with the additional element "Cleaner"
-            user = user[0] + ('Police',)
+            user = user[0] + ('Cleaner',)
             # Create a double tuple with the inner tuple
             user = (user,)
-            return render_template('police.html',user=user)
+            return render_template('cleaner.html',user=user,req=req)
+        else:
+            entry = Request(shift=shift, email=email, reason=reason)
+            db.session.add(entry)
+            db.session.commit()
+            # Database connect
+            conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+            cursor = conn.cursor()
+            # Query execute
+            cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
+            # Matched row in 'user'
+            user = cursor.fetchall()
+            # Create a new tuple with the additional element "Cleaner"
+            user = user[0] + ('Cleaner',)
+            # Create a double tuple with the inner tuple
+            user = (user,)
+            return render_template('cleaner.html',user=user,req=req)
+    else:
+        conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+        cursor = conn.cursor()
+        # Query execute
+        cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
+        # Matched row in 'user'
+        user = cursor.fetchone()
+        if user != None:
+            if user[2] == 'Police': 
+                    # Database connect
+                conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                cursor = conn.cursor()
+                # Query execute
+                cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
+                # Matched row in 'user'
+                user = cursor.fetchall()
+                # Create a new tuple with the additional element "Cleaner"
+                user = user[0] + ('Police',)
+                # Create a double tuple with the inner tuple
+                user = (user,)
+                return render_template('police.html',user=user,req="You Can't Request Again If You Already Have A Pending Request!")
+            else:
+                return render_template('error.html')
         else:
             return render_template('error.html')
-    else:
-        return render_template('error.html')
 
-@app.route('/chef')
+@app.route('/chef', methods = ['GET','POST'])
 def chef():
-    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
-    cursor = conn.cursor()
-    # Query execute
-    cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
-    # Matched row in 'user'
-    user = cursor.fetchone()
-    if user != None:
-        if user[2] == 'Chef': 
+    if request.method == 'POST':
+        req="Request Send!"
+        shift = request.form.get('shift')
+        email = session['email']
+        reason = request.form.get('reason')
+        existing_user = Request.query.filter_by(email=email).first()
+        if existing_user:
+            req="Already Requested!"
              # Database connect
             conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
             cursor = conn.cursor()
@@ -163,14 +243,51 @@ def chef():
             # Matched row in 'user'
             user = cursor.fetchall()
             # Create a new tuple with the additional element "Cleaner"
-            user = user[0] + ('Chef',)
+            user = user[0] + ('Cleaner',)
             # Create a double tuple with the inner tuple
             user = (user,)
-            return render_template('chef.html',user=user)
+            return render_template('cleaner.html',user=user,req=req)
+        else:
+            entry = Request(shift=shift, email=email, reason=reason)
+            db.session.add(entry)
+            db.session.commit()
+            # Database connect
+            conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+            cursor = conn.cursor()
+            # Query execute
+            cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
+            # Matched row in 'user'
+            user = cursor.fetchall()
+            # Create a new tuple with the additional element "Cleaner"
+            user = user[0] + ('Cleaner',)
+            # Create a double tuple with the inner tuple
+            user = (user,)
+            return render_template('cleaner.html',user=user,req=req)
+    else:
+        conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+        cursor = conn.cursor()
+        # Query execute
+        cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
+        # Matched row in 'user'
+        user = cursor.fetchone()
+        if user != None:
+            if user[2] == 'Chef': 
+                # Database connect
+                conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                cursor = conn.cursor()
+                # Query execute
+                cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
+                # Matched row in 'user'
+                user = cursor.fetchall()
+                # Create a new tuple with the additional element "Cleaner"
+                user = user[0] + ('Chef',)
+                # Create a double tuple with the inner tuple
+                user = (user,)
+                return render_template('chef.html',user=user,req="You Can't Request Again If You Already Have A Pending Request!")
+            else:
+                return render_template('error.html')
         else:
             return render_template('error.html')
-    else:
-        return render_template('error.html')
 
 @app.route('/adminDash')
 def adminDash():

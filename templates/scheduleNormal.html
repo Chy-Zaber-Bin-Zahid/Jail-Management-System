@@ -1,13 +1,64 @@
 <section class="section-schedule">
   <div class="schedule-main">
     <h1 class="schedule-title">Work Schedule</h1>
+    <h1 class="schedule-failed">{{ req }}</h1>
     {% for user in user %}
-    <p class="staff-details row-{{ loop.index }}"><span class="schedule-span">Name:</span> {{ user[0] }}</p>
-    <p class="staff-details row-{{ loop.index }}"><span class="schedule-span">Post:</span> {{ user[5] }}</p>
-    <p class="staff-details row-{{ loop.index }}"><span class="schedule-span">Email:</span> {{ user[1] }}</p>
-    <p class="staff-details row-{{ loop.index }}"><span class="schedule-span">Work:</span> {{ user[2] }}</p>
-    <p class="staff-details row-{{ loop.index }}"><span class="schedule-span">Shift:</span> {{ user[3] }}</p>
-    <p class="staff-details row-{{ loop.index }}"><span class="schedule-span">Duration:</span> {{ user[4] }}</p>
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Name:</span> {{ user[0] }}
+    </p>
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Post:</span> {{ user[5] }}
+    </p>
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Email:</span> {{ user[1] }}
+    </p>
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Work:</span> {{ user[2] }}
+    </p>
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Shift:</span> {{ user[3] }}
+    </p>
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Duration:</span> {{ user[4] }}
+    </p>
+    <button class="staff-btn" onclick="change(1)">
+      Request Schedule Change
+    </button>
     {% endfor %}
   </div>
 </section>
+
+<form
+  class="change-schedule"
+  method="post"
+  action="{% for user in user %}{% if user[5]  == 'Cleaner' %}
+  /cleaner
+{% elif user[5]  == 'Chef' %}
+  /chef
+{% else %}
+  /police
+{% endif %}{% endfor %}"
+>
+  <div class="change-btn-div">
+    <button type="button" class="change-btn" onclick="change(2)">X</button>
+  </div>
+  <div class="change-div">
+    <h1 class="account-failed">{{failed}}</h1>
+    <h1>Shift</h1>
+    <select class="account-input" name="shift" id="occupation">
+      <option value="Day">Day</option>
+      <option value="Night">Night</option>
+    </select>
+    <h1>Reason</h1>
+    <textarea
+      required
+      class="account-input"
+      name="reason"
+      id=""
+      cols="30"
+      rows="10"
+      placeholder="Type..."
+    ></textarea>
+    <input class="account-btn" name="btn" value="Submit" type="submit" />
+  </div>
+</form>

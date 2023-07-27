@@ -1,5 +1,5 @@
 function editUser(u1, u2, u3, u4, index) {
-  document.querySelectorAll(`.staff-details`).forEach(element => {
+  document.querySelectorAll(`.staff-details`).forEach((element) => {
     element.style.backgroundColor = "aliceblue";
     element.style.color = "black";
   });
@@ -12,7 +12,7 @@ function editUser(u1, u2, u3, u4, index) {
   });
 }
 function editPrisoner(u1, u2, u3, u4, u5, u6, u7, index) {
-  document.querySelectorAll(`.staff-details`).forEach(element => {
+  document.querySelectorAll(`.staff-details`).forEach((element) => {
     element.style.backgroundColor = "aliceblue";
     element.style.color = "black";
   });
@@ -27,3 +27,16 @@ function editPrisoner(u1, u2, u3, u4, u5, u6, u7, index) {
     element.style.color = "white";
   });
 }
+
+const change = (num) => {
+  if (num === 1) {
+    document.querySelector(".change-schedule").style.display = "block";
+    document.querySelector(".section-schedule").style.filter = "blur(5px)";
+    document.querySelector(".section-schedule").style.backgroundColor =
+      "#ffffff90";
+  } else {
+    document.querySelector(".change-schedule").style.display = "none";
+    document.querySelector(".section-schedule").style.filter = "blur(0px)";
+    document.querySelector(".section-schedule").style.backgroundColor = '';
+  }
+};
