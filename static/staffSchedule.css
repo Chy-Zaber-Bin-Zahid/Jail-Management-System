@@ -12,12 +12,14 @@
  padding: 1rem;
  gap: 3rem;
  font-size: 2rem;
+ box-shadow: 0 7px 20px rgb(0, 0, 0);
+ border: 3px solid white;
 }
 
 .schedule-title{
   grid-column: 1 / span 2;
   text-align: center;
-  background-color: #ffffff80;
+  background-color: #ffffff;
 }
 
 .schedule-failed{
@@ -67,7 +69,8 @@
   transition: all .3s;
   width: 50rem;
   font-size: 1.3rem;
-
+  border: 3px solid white;
+  box-shadow: 0 7px 10px gray;
 }
 
 .change-div{

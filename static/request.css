@@ -1,0 +1,64 @@
+.section-request{
+  height: calc(100% - 68.1333px);
+  padding: 1rem;
+}
+
+.request-main{
+  background-color: rgb(207, 207, 207);
+  height: 100%;
+  overflow: auto;
+  display: grid;
+  padding: 1rem;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1rem;
+  border: 5px solid rgb(255, 255, 255);
+}
+
+.request-sub{
+  background-color: #fff;
+  height: max-content;
+  font-size: 2rem;
+  padding: 1rem;
+}
+
+.two-btn{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 1rem 0rem;
+}
+
+.req-btn{
+  padding: 1rem;
+  background-color: #000000;
+  border-radius: 5px;
+  border: none;
+  font-size: 1.4rem;
+  color: white;
+  font-weight: bold;
+  transition: all .3s;
+}
+
+.req-btn:hover{
+  cursor: pointer;
+}
+
+.green:hover{
+  background-color: rgb(0, 226, 0);
+}
+
+.red:hover{
+  background-color:red;
+}
+
+.request-no{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 4rem;
+}
+
+.staff-details{
+  word-break: break-all;
+}

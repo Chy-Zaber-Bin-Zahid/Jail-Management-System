@@ -5,7 +5,8 @@
 }
 
 html,body{
-  max-width: 130rem;
+  background-color: rgb(255, 255, 255);
+  max-width: 230rem;
   margin: 0 auto;
   font-size: 65.5%;
   height: 100vh;

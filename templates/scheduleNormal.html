@@ -3,6 +3,7 @@
     <h1 class="schedule-title">Work Schedule</h1>
     <h1 class="schedule-failed">{{ req }}</h1>
     {% for user in user %}
+    {% if user[1]  == email %}
     <p class="staff-details row-{{ loop.index }}">
       <span class="schedule-span">Name:</span> {{ user[0] }}
     </p>
@@ -24,6 +25,30 @@
     <button class="staff-btn" onclick="change(1)">
       Request Schedule Change
     </button>
+    {% else %}
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Name:</span> {{ user[1] }}
+    </p>
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Post:</span> {{ user[2] }}
+    </p>
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Email:</span> {{ user[3] }}
+    </p>
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Work:</span> Not Assigned
+    </p>
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Shift:</span> Not Assigned
+    </p>
+    <p class="staff-details row-{{ loop.index }}">
+      <span class="schedule-span">Duration:</span> Not Assigned
+    </p>
+    <!-- <button disabled class="staff-btn" onclick="change(1)">
+      Request Schedule Change
+    </button> -->
+    {% endif %}
+
     {% endfor %}
   </div>
 </section>

@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {%block title %} Jail Management System {%endblock%}
+{%block navImg%}
+<img class="nav-img" src="/static/img/navlogo.png" alt="Prison Logo" />
+{%endblock%} {%block navTitle%} Jail Management {%endblock%} {%block css%}
+{{url_for('static', filename='style.css')}} {%endblock%} {%block request%}
+{{url_for('static', filename='request.css')}} {%endblock%} {%block path%}
+/request {%endblock%} {%block nav%}
+<li><a class="nav-a" href="{{url_for('adminDash')}}">Dashboard</a></li>
+<li><a class="nav-a" href="{{url_for('admin')}}">Logout</a></li>
+{%endblock%} {%block content%}
+<section class="section-request">
+  <div class="request-main">
+    {% if user|length != 0 %}
+    {% for user in user %}
+    <form class="request-sub form-{{ loop.index }}" method="post" action="/req">
+      <p class="staff-details"><b>Email:</b> {{ user[0] }}</p>
+      <p class="staff-details"><b>Requested Shift:</b> {{ user[1] }}</p>
+      <p class="staff-details"><b>Post:</b> {{ user[3] }}</p>
+      <p class="staff-details"><b>Reason:</b> {{ user[2] }}</p>
+
+      <input type="hidden" name="email" value="{{ user[0] }}">
+      <input type="hidden" name="shift" value="{{ user[1] }}">
+      <input type="hidden" name="staff" value="{{ user[3] }}">
+      <div class="two-btn">
+        <button name="btn" onclick="request('{{ loop.index }}')" value="accept" class="req-btn green">Accept</button>
+        <button name="btn" onclick="request('{{ loop.index }}')" value="reject" class="req-btn red">Reject</button>
+      </div>
+    </form>
+    {% endfor %}
+    {% else %}
+      <h1 class="request-no">No Pending Request!</h1>
+    {% endif %}
+  </div>
+</section>
+{%endblock%}

@@ -40,3 +40,8 @@ const change = (num) => {
     document.querySelector(".section-schedule").style.backgroundColor = '';
   }
 };
+
+// const request = (num) => {
+//   let form = document.querySelector('.form-' + num);
+//   form.parentNode.removeChild(form);
+// }

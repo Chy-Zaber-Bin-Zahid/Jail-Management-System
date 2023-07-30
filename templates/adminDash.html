@@ -4,7 +4,7 @@
 {%block css%} {{url_for('static', filename='style.css')}} {%endblock%} {%block
 adminDash%} {{url_for('static', filename='adminDash.css')}} {%endblock%} 
 {%block nav%}
-<li><a class="nav-a" href="{{url_for('home')}}">Home</a></li>
+<li><a class="nav-a" href="{{url_for('admin')}}">Logout</a></li>
 {%endblock%}
 {%block
 content%}
@@ -12,9 +12,9 @@ content%}
   <div class="option">
     <a href="{{url_for('staffDetails')}}">Staff Details</a>
     <a href="{{url_for('prisonerInfo')}}">Prisoner Information</a>
-    <a href="{{url_for('home')}}">Police Information</a>
-    <a href="{{url_for('home')}}">Cleaner Information</a>
-    <a href="{{url_for('home')}}">Chef Information</a>
+    <a href="{{url_for('req', param1='Guard')}}">Pending Prison Guard Request <span class="show-span">{{ req[2][1] }}</span></a>
+    <a href="{{url_for('req', param1='Cleaner')}}">Pending Cleaner Request <span class="show-span">{{ req[1][1] }}</span></a>
+    <a href="{{url_for('req', param1='Chef')}}">Pending Chef Request <span class="show-span">{{ req[0][1] }}</span></a>
   </div>
   <div class="staff-count">
     <div class="count-main">

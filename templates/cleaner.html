@@ -3,7 +3,7 @@
 {%block navTitle%} Jail Management {%endblock%} {%block css%}
 {{url_for('static', filename='style.css')}} {%endblock%} {%block staffSchedule%}
 {{url_for('static', filename='staffSchedule.css')}} {%endblock%} {%block nav%}
-<li><a class="nav-a" href="{{url_for('home')}}">Logout</a></li>
+<li><a class="nav-a" href="{{url_for('login')}}">Logout</a></li>
 {%endblock%} {%block content%}
 {% include 'scheduleNormal.html' %}
 {%endblock%}

@@ -56,56 +56,8 @@
 .option a:hover {
   background-color: rgb(0, 0, 0);
   color: white;
-  transform: scale(1.15);
+  transform: scale(1.13);
 }
-
-/* .account-div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.account-main {
-  border-radius: 5px;
-  width: 50rem;
-  padding: 1rem;
-  background-color: rgb(72, 255, 0);
-  font-size: 1.3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.account-failed {
-  color: red;
-  text-align: center;
-}
-
-.account-input {
-  padding: 0.5rem;
-  font-size: 1.6rem;
-}
-
-.account-btn {
-  padding: 0.5rem;
-  border: none;
-  font-size: 1.6rem;
-  font-weight: bold;
-  width: 10rem;
-  border-radius: 5px;
-  margin: 0 auto;
-  transition: all 0.3s;
-}
-
-.account-btn:hover {
-  cursor: pointer;
-}
-
-.three-input {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
 
 .staff-count{
   display: flex;
@@ -120,6 +72,8 @@
   grid-template-columns: repeat(2,1fr);
   gap: 2rem;
   font-size: 1.8rem;
+  box-shadow: 0 7px 20px rgb(0, 0, 0);
+  border: 3px solid white;
 }
 
 .count-span{
@@ -130,4 +84,12 @@
   grid-column: 1 / span 2;
   text-align: center;
   background-color: #fff;
+}
+
+.show-span{
+  background-color: red;
+  color: #fff;
+  padding: .1rem .8rem;
+  border-radius: 50%;
+  font-weight: bold;
 }
