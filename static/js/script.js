@@ -11,6 +11,24 @@ function editUser(u1, u2, u3, u4, index) {
     element.style.color = "white";
   });
 }
+
+function editDeputy(u1, u2, u3, u4, u5, index) {
+  document.querySelectorAll(`.staff-details`).forEach((element) => {
+    element.style.backgroundColor = "aliceblue";
+    element.style.color = "black";
+  });
+  document.querySelector(".name").value = u1;
+  document.querySelector(".email").value = u2;
+  document.querySelector(".type").value = u3;
+  document.querySelector(".shift").value = u4;
+  document.querySelector(".time").value = u5;
+  
+  document.querySelectorAll(`.row-${index}`).forEach((element) => {
+    element.style.backgroundColor = "black";
+    element.style.color = "white";
+  });
+}
+
 function editPrisoner(u1, u2, u3, u4, u5, u6, u7, index) {
   document.querySelectorAll(`.staff-details`).forEach((element) => {
     element.style.backgroundColor = "aliceblue";

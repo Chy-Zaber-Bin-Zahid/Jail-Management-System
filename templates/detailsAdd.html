@@ -38,7 +38,7 @@
     <input
       class="account-input cell"
       required
-      placeholder="CELL (Only For Modify And Delete)"
+      placeholder="CELL (Only For Modify)"
       name="cell"
       type="text"
     />
@@ -53,7 +53,48 @@
     <div class="three-input">
       <input class="account-btn" name="btn" value="Add" type="submit" />
       <input class="account-btn" name="btn" value="Modify" type="submit" />
-      <input class="account-btn" name="btn" value="Delete" type="submit" />
+    </div>
+  </form>
+  {% elif info == "deputy" %}
+  <form class="account-main" method="post" action="/deputy">
+    <h1 class="account-failed">{{failed}}</h1>
+    <h1>Name</h1>
+    <input
+      class="account-input name"
+      required
+      placeholder="NAME"
+      name="name"
+      type="text"
+    />
+    <h1>Email</h1>
+    <input
+      class="account-input email"
+      required
+      placeholder="Email"
+      name="email"
+      type="text"
+    />
+    <h1>Work Type</h1>
+    <input
+      class="account-input type"
+      required
+      placeholder="WORK TYPE"
+      name="type"
+      type="text"
+    />
+    <h1>Shift</h1>
+    <select class="account-input shift" name="shift" id="occupation">
+      <option value="Day">Day</option>
+      <option value="Night">Night</option>
+    </select>
+    <h1>Duty Time</h1>
+    <select class="account-input time" name="time" id="occupation">
+      <option value="8AM - 3PM">8AM - 3PM</option>
+      <option value="9PM - 12AM">9PM - 12AM</option>
+    </select>
+    <div class="three-input">
+      <input class="account-btn" name="btn" value="Add" type="submit" />
+      <input class="account-btn" name="btn" value="Modify" type="submit" />
     </div>
   </form>
   {% else %}
@@ -72,6 +113,7 @@
       <option value="Cleaner">Cleaner</option>
       <option value="Police">Police</option>
       <option value="Chef">Chef</option>
+      <option value="Deputy Warden">Deputy Warden</option>
     </select>
     <h1>Email</h1>
     <input
@@ -92,7 +134,6 @@
     <div class="three-input">
       <input class="account-btn" name="btn" value="Add" type="submit" />
       <input class="account-btn" name="btn" value="Modify" type="submit" />
-      <input class="account-btn" name="btn" value="Delete" type="submit" />
     </div>
   </form>
   {% endif %}

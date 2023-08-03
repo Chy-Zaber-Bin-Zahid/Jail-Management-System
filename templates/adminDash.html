@@ -12,6 +12,7 @@ content%}
   <div class="option">
     <a href="{{url_for('staffDetails')}}">Staff Details</a>
     <a href="{{url_for('prisonerInfo')}}">Prisoner Information</a>
+    <a href="{{url_for('deputy')}}">Schedule Management</a>
     <a href="{{url_for('req', param1='Guard')}}">Pending Prison Guard Request <span class="show-span">{{ req[2][1] }}</span></a>
     <a href="{{url_for('req', param1='Cleaner')}}">Pending Cleaner Request <span class="show-span">{{ req[1][1] }}</span></a>
     <a href="{{url_for('req', param1='Chef')}}">Pending Chef Request <span class="show-span">{{ req[0][1] }}</span></a>

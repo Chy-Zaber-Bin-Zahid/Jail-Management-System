@@ -46,6 +46,7 @@ def home():
 @app.route('/login', methods = ['GET','POST'])
 def login():
     failed = ""
+    session['email'] = ""
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -67,6 +68,8 @@ def login():
                     return redirect(url_for('cleaner'))
                 elif user[2] == "Chef":
                     return redirect(url_for('chef'))
+                elif user[2] == "Deputy Warden":
+                    return redirect(url_for('deputy'))
                 else:
                     return redirect(url_for('police'))
             else:
@@ -79,6 +82,7 @@ def login():
 @app.route('/admin', methods = ['GET','POST'])
 def admin():
     failed = ""
+    session['email'] = ""
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -103,6 +107,102 @@ def admin():
         else:
             failed = "Email Not Found!"
     return render_template('admin.html',failed=failed)
+
+@app.route('/deputy', methods = ['GET','POST'])
+def deputy():
+    info = 'deputy'
+    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+    cursor = conn.cursor()
+    # Query execute
+    if session['email'] != 'czaber49@gmail.com':
+        cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
+    else:
+        cursor.execute('SELECT * FROM admin WHERE email = %s', (session['email'],))
+    # Matched row in 'user'
+    user = cursor.fetchone()
+    if user != None:
+        if user[2] == 'Deputy Warden' or session['email'] == 'czaber49@gmail.com':
+            failed= ""
+            # Database connect
+            conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+            cursor = conn.cursor()
+            # Query execute
+            cursor.execute('SELECT * FROM schedule')
+            # Matched row in 'user'
+            user = cursor.fetchall()
+
+            if request.method == 'POST':
+                if 'Add' == request.form.get('btn'):
+                    name = request.form.get('name')
+                    email = request.form.get('email')
+                    type = request.form.get('type')
+                    shift = request.form.get('shift')
+                    time = request.form.get('time')
+
+                    existing_user = Schedule.query.filter_by(email=email).first()
+                    if existing_user:
+                        failed="Email already exists. Please choose a different email!"
+                    else:
+                        entry = Schedule(name=name, shift=shift, type=type, email=email, time=time)
+                        db.session.add(entry)
+                        db.session.commit()
+                        # Database connect
+                        conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                        cursor = conn.cursor()
+                        # Query execute
+                        cursor.execute('SELECT * FROM schedule')
+                        # Matched row in 'user'
+                        user = cursor.fetchall()
+                        failed="Added!"
+                elif 'Modify' == request.form.get('btn'):
+                    email = request.form.get('email')
+                    user = Schedule.query.filter_by(email=email).first()
+                    if user:
+                        user.name = request.form.get('name')
+                        user.type = request.form.get('type')
+                        user.shift = request.form.get('shift')
+                        user.time = request.form.get('time')
+                        
+                        db.session.commit()
+                        # Database connect
+                        conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                        cursor = conn.cursor()
+                        # Query execute
+                        cursor.execute('SELECT * FROM schedule')
+                        # Matched row in 'user'
+                        user = cursor.fetchall()
+                        failed="Changed!"
+                elif '🍳' == request.form.get('btn'):
+                    email = request.form.get('email')
+                    user = Schedule.query.filter_by(email=email).first()
+                    # Database connect
+                    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                    cursor = conn.cursor()
+                    # Query execute
+                    cursor.execute('SELECT * FROM schedule WHERE email = %s', (email,))
+                    # Matched row in 'user'
+                    user = cursor.fetchall()
+                        
+                else:
+                    email = request.form.get('email')
+                    user = Schedule.query.filter_by(email=email).first()
+                    if user:
+                        db.session.delete(user)
+                        db.session.commit()
+                    # Database connect
+                    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                    cursor = conn.cursor()
+                    # Query execute
+                    cursor.execute('SELECT * FROM schedule')
+                    # Matched row in 'user'
+                    user = cursor.fetchall()
+                    # failed="Deleted!"
+
+            return render_template('deputy.html',user=user,failed=failed,info=info)
+        else:
+            return render_template('error.html')
+    else:
+        return render_template('error.html')
 
 @app.route('/cleaner', methods = ['GET','POST'])
 def cleaner():
@@ -432,7 +532,7 @@ def staffDetails():
                 cursor.execute('SELECT * FROM user')
                 # Matched row in 'user'
                 user = cursor.fetchall()
-                failed="Deleted!"
+                # failed="Deleted!"
 
         return render_template('staffDetails.html',user=user,failed=failed,info=info)
     
@@ -531,7 +631,7 @@ def prisonerInfo():
                 cursor.execute('SELECT * FROM prisoner')
                 # Matched row in 'user'
                 user = cursor.fetchall()
-                failed="Deleted!"
+                # failed="Deleted!"
 
         return render_template('prisonerInfo.html',user=user,failed=failed,info=info)
 

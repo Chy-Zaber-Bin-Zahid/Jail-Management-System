@@ -56,6 +56,12 @@
   grid-template-columns: repeat(8,1fr);
 }
 
+.deputy-main{
+  display: grid;
+  grid-template-columns: repeat(6,1fr);
+}
+
+
 .staff-title{
   font-size: 1.6rem;
   padding: 1rem;
@@ -148,4 +154,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.two-btn{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 8rem;
+  margin: 0 auto;
+}
+
+.delete-btn{
+  background-color: red;
+  color: white;
+}
+
+.delete-btn:hover{
+  background-color: rgb(224, 0, 0);
 }
