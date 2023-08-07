@@ -58,6 +58,11 @@
 
 .deputy-main{
   display: grid;
+  grid-template-columns: repeat(7,1fr);
+}
+
+.deputy-nothing{
+  display: grid;
   grid-template-columns: repeat(6,1fr);
 }
 
@@ -73,6 +78,13 @@
   font-size: 1.5rem;
   padding: 1rem;
   background-color: aliceblue;
+}
+
+.staff-assign{
+  grid-column: 1 / span 6;
+  text-align: center;
+  font-weight: bold;
+  font-size: 2rem;
 }
 
 .first-four {

@@ -27,6 +27,7 @@ class Schedule(db.Model):
     type = db.Column(db.String(1000), nullable=False)
     shift = db.Column(db.String(1000), nullable=False)
     time = db.Column(db.String(1000), nullable=False)
+    role = db.Column(db.String(120), nullable=False)
 
 class Prisoner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -110,6 +111,7 @@ def admin():
 
 @app.route('/deputy', methods = ['GET','POST'])
 def deputy():
+    em = session['email']
     info = 'deputy'
     conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
     cursor = conn.cursor()
@@ -127,78 +129,81 @@ def deputy():
             conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
             cursor = conn.cursor()
             # Query execute
-            cursor.execute('SELECT * FROM schedule')
+            cursor.execute('SELECT * FROM schedule Where type = %s',('Not Assigned',))
             # Matched row in 'user'
             user = cursor.fetchall()
+            if user:
+                if request.method == 'POST':
+                #     if 'Add' == request.form.get('btn'):
+                #         name = request.form.get('name')
+                #         email = request.form.get('email')
+                #         type = request.form.get('type')
+                #         shift = request.form.get('shift')
+                #         time = request.form.get('time')
 
-            if request.method == 'POST':
-                if 'Add' == request.form.get('btn'):
-                    name = request.form.get('name')
-                    email = request.form.get('email')
-                    type = request.form.get('type')
-                    shift = request.form.get('shift')
-                    time = request.form.get('time')
-
-                    existing_user = Schedule.query.filter_by(email=email).first()
-                    if existing_user:
-                        failed="Email already exists. Please choose a different email!"
-                    else:
-                        entry = Schedule(name=name, shift=shift, type=type, email=email, time=time)
-                        db.session.add(entry)
-                        db.session.commit()
+                #         existing_user = Schedule.query.filter_by(email=email).first()
+                #         if existing_user:
+                #             failed="Email already exists. Please choose a different email!"
+                #         else:
+                #             entry = Schedule(name=name, shift=shift, type=type, email=email, time=time)
+                #             db.session.add(entry)
+                #             db.session.commit()
+                #             # Database connect
+                #             conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                #             cursor = conn.cursor()
+                #             # Query execute
+                #             cursor.execute('SELECT * FROM schedule Where type = %s',('Not Assigned',))
+                #             # Matched row in 'user'
+                #             user = cursor.fetchall()
+                #             failed="Added!"
+                    if 'Modify' == request.form.get('btn'):
+                        email = request.form.get('email')
+                        user = Schedule.query.filter_by(email=email).first()
+                        if user:
+                            user.type = request.form.get('type')
+                            user.shift = request.form.get('shift')
+                            user.time = request.form.get('time')
+                            
+                            db.session.commit()
+                            # Database connect
+                            conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                            cursor = conn.cursor()
+                            # Query execute
+                            cursor.execute('SELECT * FROM schedule Where type = %s',('Not Assigned',))
+                            # Matched row in 'user'
+                            user = cursor.fetchall()
+                            if not user:
+                                user = "Nothing"
+                            failed="Changed!"
+                    elif '🍳' == request.form.get('btn'):
+                        email = request.form.get('email')
+                        user = Schedule.query.filter_by(email=email).first()
                         # Database connect
                         conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
                         cursor = conn.cursor()
                         # Query execute
-                        cursor.execute('SELECT * FROM schedule')
+                        cursor.execute('SELECT * FROM schedule WHERE email = %s', (email,))
                         # Matched row in 'user'
                         user = cursor.fetchall()
-                        failed="Added!"
-                elif 'Modify' == request.form.get('btn'):
-                    email = request.form.get('email')
-                    user = Schedule.query.filter_by(email=email).first()
-                    if user:
-                        user.name = request.form.get('name')
-                        user.type = request.form.get('type')
-                        user.shift = request.form.get('shift')
-                        user.time = request.form.get('time')
-                        
-                        db.session.commit()
-                        # Database connect
-                        conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
-                        cursor = conn.cursor()
-                        # Query execute
-                        cursor.execute('SELECT * FROM schedule')
-                        # Matched row in 'user'
-                        user = cursor.fetchall()
-                        failed="Changed!"
-                elif '🍳' == request.form.get('btn'):
-                    email = request.form.get('email')
-                    user = Schedule.query.filter_by(email=email).first()
-                    # Database connect
-                    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
-                    cursor = conn.cursor()
-                    # Query execute
-                    cursor.execute('SELECT * FROM schedule WHERE email = %s', (email,))
-                    # Matched row in 'user'
-                    user = cursor.fetchall()
-                        
-                else:
-                    email = request.form.get('email')
-                    user = Schedule.query.filter_by(email=email).first()
-                    if user:
-                        db.session.delete(user)
-                        db.session.commit()
-                    # Database connect
-                    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
-                    cursor = conn.cursor()
-                    # Query execute
-                    cursor.execute('SELECT * FROM schedule')
-                    # Matched row in 'user'
-                    user = cursor.fetchall()
-                    # failed="Deleted!"
+                            
+                    # else:
+                    #     email = request.form.get('email')
+                    #     user = Schedule.query.filter_by(email=email).first()
+                    #     if user:
+                    #         db.session.delete(user)
+                    #         db.session.commit()
+                    #     # Database connect
+                    #     conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                    #     cursor = conn.cursor()
+                    #     # Query execute
+                    #     cursor.execute('SELECT * FROM schedule')
+                    #     # Matched row in 'user'
+                    #     user = cursor.fetchall()
+                    #     # failed="Deleted!"
+            else:
+                user = 'Nothing'
 
-            return render_template('deputy.html',user=user,failed=failed,info=info)
+            return render_template('deputy.html',user=user,failed=failed,info=info, em=em)
         else:
             return render_template('error.html')
     else:
@@ -256,11 +261,11 @@ def cleaner():
                 conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
                 cursor = conn.cursor()
                 # Query execute
-                cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
+                cursor.execute('SELECT * FROM schedule WHERE email = %s And type = %s' , (session['email'],'Not Assigned'))
                 # Matched row in 'user'
                 user = cursor.fetchall()
                 # Create a new tuple with the additional element "Cleaner"
-                if not user:
+                if user:
                     cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
                     # Matched row in 'user'
                     user = cursor.fetchall()
@@ -269,6 +274,13 @@ def cleaner():
                     user = (user,)
                     return render_template('cleaner.html',user=user,req="Your Work Schedule Will Be Updated Soon!",email=session['email'])
                 else:
+                    # Database connect
+                    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                    cursor = conn.cursor()
+                    # Query execute
+                    cursor.execute('SELECT * FROM schedule WHERE email = %s' , (session['email'],))
+                    # Matched row in 'user'
+                    user = cursor.fetchall()
                     user = user[0] + ('Cleaner',)
                     # Create a double tuple with the inner tuple
                     user = (user,)
@@ -332,7 +344,15 @@ def police():
                 cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
                 # Matched row in 'user'
                 user = cursor.fetchall()
-                if not user:
+                # Database connect
+                conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                cursor = conn.cursor()
+                # Query execute
+                cursor.execute('SELECT * FROM schedule WHERE email = %s And type = %s' , (session['email'],'Not Assigned'))
+                # Matched row in 'user'
+                user = cursor.fetchall()
+                # Create a new tuple with the additional element "Cleaner"
+                if user:
                     cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
                     # Matched row in 'user'
                     user = cursor.fetchall()
@@ -341,6 +361,13 @@ def police():
                     user = (user,)
                     return render_template('police.html',user=user,req="Your Work Schedule Will Be Updated Soon!",email=session['email'])
                 else:
+                    # Database connect
+                    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                    cursor = conn.cursor()
+                    # Query execute
+                    cursor.execute('SELECT * FROM schedule WHERE email = %s' , (session['email'],))
+                    # Matched row in 'user'
+                    user = cursor.fetchall()
                     user = user[0] + ('Police',)
                     # Create a double tuple with the inner tuple
                     user = (user,)
@@ -404,7 +431,15 @@ def chef():
                 cursor.execute('SELECT * FROM schedule WHERE email = %s', (session['email'],))
                 # Matched row in 'user'
                 user = cursor.fetchall()
-                if not user:
+                # Database connect
+                conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                cursor = conn.cursor()
+                # Query execute
+                cursor.execute('SELECT * FROM schedule WHERE email = %s And type = %s' , (session['email'],'Not Assigned'))
+                # Matched row in 'user'
+                user = cursor.fetchall()
+                # Create a new tuple with the additional element "Cleaner"
+                if user:
                     cursor.execute('SELECT * FROM user WHERE email = %s', (session['email'],))
                     # Matched row in 'user'
                     user = cursor.fetchall()
@@ -413,10 +448,16 @@ def chef():
                     user = (user,)
                     return render_template('chef.html',user=user,req="Your Work Schedule Will Be Updated Soon!",email=session['email'])
                 else:
+                    # Database connect
+                    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
+                    cursor = conn.cursor()
+                    # Query execute
+                    cursor.execute('SELECT * FROM schedule WHERE email = %s' , (session['email'],))
+                    # Matched row in 'user'
+                    user = cursor.fetchall()
                     user = user[0] + ('Chef',)
                     # Create a double tuple with the inner tuple
                     user = (user,)
-                    print(user)
                     return render_template('chef.html',user=user,req="You Can't Request Again If You Already Have A Pending Request!",email=session['email'])
             else:
                 return render_template('error.html')
@@ -484,6 +525,11 @@ def staffDetails():
                     entry = User(name=name, role=role, password=hashedPassword, email=email)
                     db.session.add(entry)
                     db.session.commit()
+
+                    if role != "Deputy Warden":
+                        entry = Schedule(name=name, email=email, type='Not Assigned', shift='Not Assigned', time='Not Assigned',role = role)
+                        db.session.add(entry)
+                        db.session.commit()
                     # Database connect
                     conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
                     cursor = conn.cursor()
@@ -500,6 +546,15 @@ def staffDetails():
                     user.password = hashlib.sha256(request.form.get('password').encode('utf-8')).hexdigest()
                     user.role = request.form.get('occupation')
                     db.session.commit()
+                    if role != 'Deputy Warden':
+                         user = Schedule.query.filter_by(email=email).first()
+                         user.name = request.form.get('name')
+                         user.role = request.form.get('role')
+                    else:
+                        user = Schedule.query.filter_by(email=email).first()
+                        if user:
+                            db.session.delete(user)
+                            db.session.commit()    
                     # Database connect
                     conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
                     cursor = conn.cursor()
@@ -525,6 +580,10 @@ def staffDetails():
                 if user:
                     db.session.delete(user)
                     db.session.commit()
+                    user = Schedule.query.filter_by(email=email).first()
+                    if user:
+                        db.session.delete(user)
+                        db.session.commit()
                 # Database connect
                 conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='jailmanage')
                 cursor = conn.cursor()

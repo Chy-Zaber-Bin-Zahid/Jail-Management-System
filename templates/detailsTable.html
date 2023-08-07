@@ -19,7 +19,7 @@
 {% if info == "prisoner" %}
 <div class="prisoner-main">
   {% elif info == "deputy" %}
-  <div class="deputy-main">
+  <div class="{% if user != 'Nothing' %}deputy-main{% else %}deputy-nothing{% endif %}">
   {% else %}
   <div class="staff-main">
     {% endif %} {% if info == "prisoner" %}
@@ -37,6 +37,7 @@
     <h1 class="staff-title">Work Type</h1>
     <h1 class="staff-title">Shift</h1>
     <h1 class="staff-title">Duty Duration</h1>
+    <h1 class="staff-title">Role</h1>
     <h1></h1>
     {% else %}
     <h1 class="staff-title">Id</h1>
@@ -74,32 +75,37 @@
     <!-- <p class="staff-details {% if loop.index <= loop.index %} last-four{% endif %} ">{{ user[4] }}</p> -->
     {% endfor %} 
 
-    {% elif info == "deputy" %} {% for user in user %}
+    {% elif info == "deputy" %} 
+    {% if user != "Nothing" %} 
+    {% for user in user %}
     
     <p class="staff-details row-{{ loop.index }}">{{ user[0] }}</p>
     <p class="staff-details row-{{ loop.index }}">{{ user[1] }}</p>
     <p class="staff-details row-{{ loop.index }}">{{ user[2] }}</p>
     <p class="staff-details row-{{ loop.index }}">{{ user[3] }}</p>
     <p class="staff-details row-{{ loop.index }}">{{ user[4] }}</p>
+    <p class="staff-details row-{{ loop.index }}">{{ user[5] }}</p>
     <form method="post" action="/deputy" class="two-btn">
       <button
         type="button"
-        onclick="editDeputy('{{ user[0] }}', '{{ user[1] }}', '{{ user[2] }}', '{{ user[3] }}','{{ user[4] }}', '{{ loop.index }}')"
+        onclick="editDeputy('{{ user[1] }}', '{{ loop.index }}')"
         class="staff-btn"
       >
         <ion-icon name="create-outline"></ion-icon>
       </button>
-      <button class="staff-btn delete-btn">
+      <!-- <button class="staff-btn delete-btn">
         <input type="hidden" name="email" value="{{ user[1] }}" />
         <ion-icon name="trash-outline"
           ><input class="account-btn" name="btn" value="Delete" type="submit"
         /></ion-icon>
-      </button>
+      </button> -->
 
     </form>
     <!-- <p class="staff-details {% if loop.index <= loop.index %} last-four{% endif %} ">{{ user[4] }}</p> -->
-    {% endfor %} 
-    
+    {% endfor %}
+    {% else %}
+    <p class="staff-details staff-assign">Nothing To Assign!</p>
+    {% endif %}
     {% else %} {% for user in user %}
     <p class="staff-details row-{{ loop.index }}">{{ user[0] }}</p>
     <p class="staff-details row-{{ loop.index }}">{{ user[1] }}</p>

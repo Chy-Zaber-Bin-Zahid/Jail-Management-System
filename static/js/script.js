@@ -12,16 +12,12 @@ function editUser(u1, u2, u3, u4, index) {
   });
 }
 
-function editDeputy(u1, u2, u3, u4, u5, index) {
+function editDeputy(u1, index) {
   document.querySelectorAll(`.staff-details`).forEach((element) => {
     element.style.backgroundColor = "aliceblue";
     element.style.color = "black";
   });
-  document.querySelector(".name").value = u1;
-  document.querySelector(".email").value = u2;
-  document.querySelector(".type").value = u3;
-  document.querySelector(".shift").value = u4;
-  document.querySelector(".time").value = u5;
+  document.querySelector(".email").value = u1;
   
   document.querySelectorAll(`.row-${index}`).forEach((element) => {
     element.style.backgroundColor = "black";

@@ -4,7 +4,12 @@
 {%endblock%} {%block navTitle%} Jail Management {%endblock%} {%block css%}
 {{url_for('static', filename='style.css')}} {%endblock%}{%block adminDash%}
 {{url_for('static', filename='staffDetails.css')}} {%endblock%}{%block nav%}
+{% if em == "czaber49@gmail.com" %}
+<li><a class="nav-a" href="{{url_for('adminDash')}}">Dashboard</a></li>
+<li><a class="nav-a" href="{{url_for('admin')}}">Logout</a></li>
+{% else %}
 <li><a class="nav-a" href="{{url_for('login')}}">Logout</a></li>
+{% endif %}
 {%endblock%} {%block content%}
 <section class="section-show">
   <div class="option">{% include 'detailsTable.html' %}</div>
