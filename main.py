@@ -540,18 +540,25 @@ def staffDetails():
                     failed="Added!"
             elif 'Modify' == request.form.get('btn'):
                 email = request.form.get('email')
+                role = request.form.get('occupation')
                 user = User.query.filter_by(email=email).first()
                 if user:
                     user.name = request.form.get('name')
                     user.password = hashlib.sha256(request.form.get('password').encode('utf-8')).hexdigest()
                     user.role = request.form.get('occupation')
                     db.session.commit()
+                    user = Schedule.query.filter_by(email=email).first()
                     if role != 'Deputy Warden':
-                         user = Schedule.query.filter_by(email=email).first()
-                         user.name = request.form.get('name')
-                         user.role = request.form.get('role')
+                        if user:
+                            user.name = request.form.get('name')
+                            user.role = request.form.get('occupation')
+                            db.session.commit()
+                        else:
+                            name = request.form.get('name')
+                            entry = Schedule(name=name, email=email, type='Not Assigned', shift='Not Assigned', time='Not Assigned',role = role)
+                            db.session.add(entry)
+                            db.session.commit() 
                     else:
-                        user = Schedule.query.filter_by(email=email).first()
                         if user:
                             db.session.delete(user)
                             db.session.commit()    
