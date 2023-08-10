@@ -162,7 +162,10 @@ def deputy():
                         if user:
                             user.type = request.form.get('type')
                             user.shift = request.form.get('shift')
-                            user.time = request.form.get('time')
+                            if request.form.get('shift') == 'Day':
+                                user.time = '8AM - 3PM'
+                            else:
+                                user.time = '9PM - 12AM'
                             
                             db.session.commit()
                             # Database connect
