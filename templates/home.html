@@ -2,8 +2,16 @@
 {%block navImg%} <img class="nav-img" src="/static/img/navlogo.png" alt="Prison Logo"> {%endblock%}
 {%block navTitle%} Jail Management {%endblock%}
 {%block css%} {{url_for('static', filename='style.css')}} {%endblock%}
+{%block home%} {{url_for('static', filename='home.css')}} {%endblock%}
 {%block nav%} 
 <li><a class="nav-a" href="{{url_for('login')}}">Login</a></li>
 <li><a class="nav-a" href="{{url_for('admin')}}">Admin</a></li>
 {%endblock%}
-{%block content%} {%endblock%}
+{%block content%}
+<section class="section-home">
+  <div class="home-main">
+    <img class="home-img" src="/static/img/about.jpg" alt="About Image">
+    <p class="home-para">Jail management encompasses the intricate web of procedures, systems, and personnel responsible for maintaining order, security, and rehabilitation within correctional facilities. It involves an array of critical tasks, from inmate intake and classification to daily operations, security measures, and inmate programs. Effective jail management aims not only to ensure the safety of both inmates and staff but also to promote opportunities for rehabilitation and reintegration into society. This demands a delicate balance between security measures and a supportive environment that fosters personal growth and behavior change. Jail management teams work diligently to create a structured atmosphere that prevents escapes, violence, and contraband while providing inmates with access to educational, vocational, and mental health resources. By upholding these standards, jail management plays a pivotal role in the criminal justice system's efforts to achieve public safety and individual reform.</p>
+  </div>
+</section>
+{%endblock%}
